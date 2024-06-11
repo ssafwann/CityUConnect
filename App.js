@@ -1,8 +1,11 @@
+import "./global.css";
+
 import React, { useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import "./global.css";
 import AppNavigator from "./src/routes/AppNavigator";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AuthContextProvider } from "./src/config/AuthContext";
 
 const App = () => {
   // lightest to darkest
@@ -31,7 +34,13 @@ const App = () => {
     SplashScreen.hideAsync();
   }
 
-  return <AppNavigator />;
+  return (
+    <SafeAreaProvider>
+      <AuthContextProvider>
+        <AppNavigator />
+      </AuthContextProvider>
+    </SafeAreaProvider>
+  );
 };
 
 export default App;

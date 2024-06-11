@@ -1,19 +1,16 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { AuthContext } from "../config/AuthContext";
 
-import WelcomePage from "../pages/WelcomePage";
-
-const Stack = createStackNavigator();
+import AuthRoutes from "./auth/AuthRoutes";
+import MainRoutes from "./main/MainRoutes";
 
 const AppNavigator = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{ headerShown: false, animationEnabled: false }}
-      >
-        <Stack.Screen name="Welcome" component={WelcomePage} />
-      </Stack.Navigator>
+      {user ? <MainRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
 };
