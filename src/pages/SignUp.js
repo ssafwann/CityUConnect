@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
+  StyleSheet,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -190,7 +191,7 @@ const SignUp = ({ navigation }) => {
   );
 };
 
-styles = {
+const styles = StyleSheet.create({
   buttonTouch: {
     backgroundColor: "#bf165e",
     borderRadius: 12,
@@ -198,6 +199,6 @@ styles = {
     alignItems: "center",
     height: hp(6.5),
   },
-};
+});
 
 export default SignUp;
