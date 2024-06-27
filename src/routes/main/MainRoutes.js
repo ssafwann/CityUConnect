@@ -17,6 +17,22 @@ import {
   Octicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import LanguageLearner from "../../pages/LanguageLearner/LanguageLearner.js";
+import FoodMap from "../../pages/FoodMap/FoodMap.js";
+
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator
+      screenOptions={{ headerShown: false, animationEnabled: false }}
+    >
+      <HomeStack.Screen name="HomePage" component={HomePage} />
+      <HomeStack.Screen name="LLearner" component={LanguageLearner} />
+      <HomeStack.Screen name="FoodMap" component={FoodMap} />
+    </HomeStack.Navigator>
+  );
+}
 
 function HomeTabs() {
   const { user } = useContext(AuthContext);
@@ -49,7 +65,7 @@ function HomeTabs() {
     >
       <Tab.Screen
         name="Index"
-        component={HomePage}
+        component={HomeStackScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <AntDesign name="home" size={24} color={color} />
