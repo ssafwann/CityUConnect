@@ -5,22 +5,16 @@ import {
   StyleSheet,
   Text,
   ImageBackground,
-  Image,
   Pressable,
 } from "react-native";
 import { AuthContext } from "../config/AuthContext";
-import { SafeAreaView } from "react-native-safe-area-context";
 import CustomKeyboardView from "../components/CustomKeyboardView";
-import HeaderBG from "../assets/images/cityu-bg.jpg"; // Step 2: Import your local image
+import HeaderBG from "../assets/images/cityu-bg.jpg";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import {
-  AntDesign,
-  Octicons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const HomePage = ({ navigation }) => {
   const { user } = useContext(AuthContext);
@@ -30,7 +24,7 @@ const HomePage = ({ navigation }) => {
       {/* top header */}
       <View style={styles.container}>
         <ImageBackground
-          source={HeaderBG} // Make sure HeaderBG is correctly imported
+          source={HeaderBG}
           style={styles.backgroundImage}
           resizeMode="cover"
         >
@@ -188,20 +182,20 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 175,
-    overflow: "hidden", // Ensures the borderRadius is applied to the background image
+    overflow: "hidden",
   },
   backgroundImage: {
     flex: 1,
-    justifyContent: "flex-end", // Aligns the welcome text to the bottom
+    justifyContent: "flex-end",
   },
   tintOverlay: {
-    ...StyleSheet.absoluteFillObject, // Makes the overlay cover the entire parent
-    backgroundColor: "rgba(191, 22, 94, 0.9)", // Using #bf165e with 80% opacity for a darker tint
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(191, 22, 94, 0.9)",
   },
   welcomeText: {
     fontSize: hp(2.5),
     color: "white",
-    marginBottom: 10, // Adjusts the space from the bottom edge
+    marginBottom: 10,
     paddingLeft: 10,
     fontWeight: "bold",
   },
