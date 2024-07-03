@@ -193,13 +193,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp(2.5),
     borderRadius: 10,
   },
-  cancelButton: {
-    backgroundColor: "#FF0000",
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    height: hp(6.5),
-  },
 });
 
 export default ForumPage;

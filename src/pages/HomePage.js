@@ -92,7 +92,7 @@ const HomePage = ({ navigation }) => {
             <Pressable
               className="bg-white flex-col py-7 px-4 gap-6"
               style={{ borderRadius: 10 }}
-              onPress={() => navigation.navigate("LLearner")}
+              onPress={() => navigation.navigate("LanguagePage")}
             >
               {/* image icon */}
               <View

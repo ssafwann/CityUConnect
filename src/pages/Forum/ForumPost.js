@@ -296,31 +296,6 @@ const ForumPost = ({ navigation }) => {
                             </Text>
                           </Pressable>
                         )}
-
-                        {/* 
-                        {postAuthor.userID === user.uid ? (
-                  <Text className="font-bold text-black">
-                    {postAuthor.name}
-                  </Text>
-                ) : (
-                  <Pressable
-                    onPress={() => {
-                      navigation.navigate("PeoplesProfile", {
-                        postAuthorId: postAuthor.userID,
-                      });
-                    }}
-                    style={({ pressed }) => [
-                      {
-                        opacity: pressed ? 0.25 : 1,
-                      },
-                      styles.wrapperCustom,
-                    ]}
-                  >
-                    <Text className="font-bold text-indigo-700">
-                      {postAuthor.name}
-                    </Text>
-                  </Pressable>
-                )} */}
                       </View>
                       <Text
                         style={{ fontSize: hp(1.6) }}
