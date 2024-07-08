@@ -12,7 +12,10 @@
       "backgroundColor": "#bf165e"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyBFk_AcyV-b_i-K3SwxJmH91LjeyHsKan4"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -43,7 +46,15 @@
         {
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
       ]
     ]
   }
 }
+
+

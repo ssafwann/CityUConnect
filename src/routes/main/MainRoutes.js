@@ -8,7 +8,8 @@ import ProfilePage from "../../pages/ProfilePage.js";
 import ForumRoutes from "./ForumRoutes.js";
 import TabBar from "../../components/TabBar.js";
 import { AuthContext } from "../../config/AuthContext.js";
-import FoodMap from "../../pages/FoodMap/FoodMap.js";
+import FoodMapStack from "./FoodMapRoutes.js";
+import LanguageStack from "./LanguageRoutes.js";
 
 const MainStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -18,7 +19,6 @@ import {
   Octicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import LanguageStack from "./LanguageRoutes.js";
 
 const HomeStack = createStackNavigator();
 
@@ -29,7 +29,7 @@ function HomeStackScreen() {
     >
       <HomeStack.Screen name="HomePage" component={HomePage} />
       <HomeStack.Screen name="LanguagePage" component={LanguageStack} />
-      <HomeStack.Screen name="FoodMap" component={FoodMap} />
+      <HomeStack.Screen name="FoodMap" component={FoodMapStack} />
     </HomeStack.Navigator>
   );
 }
