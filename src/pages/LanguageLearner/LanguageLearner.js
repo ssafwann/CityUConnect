@@ -15,8 +15,8 @@ const LanguageLearner = ({ navigation }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const forumDb = await getDocs(collection(db, "language"));
-        const categories = forumDb.docs.map((doc) => ({
+        const languageDb = await getDocs(collection(db, "language"));
+        const categories = languageDb.docs.map((doc) => ({
           id: doc.id,
           name: doc.id,
           iconName: doc.data().iconName,

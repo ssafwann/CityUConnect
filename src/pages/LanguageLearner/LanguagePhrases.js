@@ -15,7 +15,7 @@ import {
 } from "react-native-responsive-screen";
 import { Ionicons } from "@expo/vector-icons";
 import { db } from "../../config/Firebase";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 const LanguagePhrases = ({ navigation }) => {
   const route = useRoute();
@@ -25,7 +25,18 @@ const LanguagePhrases = ({ navigation }) => {
   useEffect(() => {
     const fetchWords = async () => {
       try {
-        const q = query(collection(db, "language", categoryId, "words"));
+        let q;
+        const numbersCategoryId = "Numbers";
+        if (categoryId === numbersCategoryId) {
+          // If the category is "numbers", order by a field representing numeric order
+          q = query(
+            collection(db, "language", categoryId, "words"),
+            orderBy("numericOrder")
+          );
+        } else {
+          // For other categories, no specific ordering
+          q = query(collection(db, "language", categoryId, "words"));
+        }
         const querySnapshot = await getDocs(q);
         const wordsArray = [];
         querySnapshot.forEach((doc) => {
@@ -35,7 +46,7 @@ const LanguagePhrases = ({ navigation }) => {
         });
         setWords(wordsArray);
       } catch (error) {
-        console.error("Error fetching comments: ", error);
+        console.error("Error fetching phrases: ", error);
       }
     };
 

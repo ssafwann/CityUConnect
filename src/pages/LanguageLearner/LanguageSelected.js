@@ -18,6 +18,7 @@ import { db } from "../../config/Firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import { Slider } from "@miblanchard/react-native-slider";
 
 const LanguageSelected = ({ navigation }) => {
   const route = useRoute();
@@ -25,9 +26,20 @@ const LanguageSelected = ({ navigation }) => {
   const [phrase, setPhrase] = useState("");
   const [loading, setLoading] = useState(true);
   const sound = useRef(new Audio.Sound());
+  const [audioSpeed, setAudioSpeed] = useState(1); // Default speed is 1x
+  const [highlightIndex, setHighlightIndex] = useState(-1); // To track currently highlighted character
+  const [segmentDuration, setSegmentDuration] = useState(0); // Duration for each character/word segment
 
   const [characters, setCharacters] = useState([]);
   const [jyutpings, setJyutpings] = useState([]);
+
+  const handleSpeedChange = async (speed) => {
+    setAudioSpeed(speed);
+    const status = await sound.current.getStatusAsync();
+    if (status.isLoaded) {
+      await sound.current.setRateAsync(speed, (shouldCorrectPitch = true));
+    }
+  };
 
   const loadSound = async (url) => {
     try {
@@ -44,6 +56,7 @@ const LanguageSelected = ({ navigation }) => {
       if (status.isLoaded) {
         if (status.isPlaying) {
           await sound.current.stopAsync();
+          setHighlightIndex(-1);
         }
         await sound.current.setPositionAsync(0);
         await sound.current.playAsync();
@@ -86,12 +99,45 @@ const LanguageSelected = ({ navigation }) => {
     };
   }, [wordId]);
 
+  // Calculate the duration for each character/word segment
+  useEffect(() => {
+    const calculateSegmentDuration = async () => {
+      const status = await sound.current.getStatusAsync();
+      if (status.isLoaded) {
+        const totalDuration = status.durationMillis;
+        const segments = characters.length;
+        // Calculate the duration for each segment (character)
+        const durationPerSegment = totalDuration / segments;
+        setSegmentDuration(durationPerSegment);
+      }
+    };
+
+    calculateSegmentDuration();
+  }, [characters]);
+
+  // Highlight the current character/word segment being played
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const status = await sound.current.getStatusAsync();
+      // If audio is playing, calculate the current segment based on the current time
+      if (status.isPlaying) {
+        const currentTime = status.positionMillis;
+        const currentSegment = Math.floor(currentTime / segmentDuration);
+        setHighlightIndex(currentSegment);
+      } else {
+        setHighlightIndex(-1);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [segmentDuration]);
+
   if (loading) {
     return <ActivityIndicator />;
   }
 
   if (!phrase) {
-    return <Text>No post found</Text>;
+    return <Text>Sorry! There was a problem retrieving the phrase.</Text>;
   }
 
   return (
@@ -181,11 +227,49 @@ const LanguageSelected = ({ navigation }) => {
               <View style={styles.container}>
                 {characters.map((char, index) => (
                   <View key={index} style={styles.charContainer}>
-                    <Text style={styles.cantoneseText}>{char}</Text>
-                    <Text style={styles.jyutpingText}>{jyutpings[index]}</Text>
+                    <Text
+                      style={[
+                        styles.cantoneseText,
+                        highlightIndex === index && styles.highlightedText,
+                      ]}
+                    >
+                      {char}
+                    </Text>
+                    <Text style={[styles.jyutpingText]}>
+                      {jyutpings[index]}
+                    </Text>
                   </View>
                 ))}
               </View>
+            </View>
+
+            <View
+              className="bg-white flex-col px-5 py-7 gap-4"
+              style={{ borderRadius: 10, minHeight: hp(15) }}
+            >
+              <View
+                style={{
+                  backgroundColor: "#bf165e",
+                  paddingHorizontal: 10,
+                  paddingVertical: 4,
+                  alignSelf: "flex-start",
+                  borderRadius: 5,
+                }}
+              >
+                <Text className="text-white font-bold">Audio Speed</Text>
+              </View>
+
+              <Slider
+                value={audioSpeed}
+                onValueChange={(value) => handleSpeedChange(value[0])}
+                minimumValue={0.5}
+                maximumValue={2}
+                step={0.1}
+                thumbTintColor="#bf165e"
+                minimumTrackTintColor="#bf165e"
+                maximumTrackTintColor="#000000"
+              />
+              <Text>Speed: {audioSpeed.toFixed(1)}x</Text>
             </View>
           </View>
         </ScrollView>
@@ -216,6 +300,9 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 4,
     color: "red",
+  },
+  highlightedText: {
+    backgroundColor: "yellow",
   },
 });
 
