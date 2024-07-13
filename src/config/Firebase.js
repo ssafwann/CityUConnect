@@ -23,6 +23,3 @@ export const auth = initializeAuth(app, {
 
 // Initialize Firestore
 export const db = getFirestore(app);
-
-// Reference to the "users" collection
-// export const usersRef = collection(db, "users");

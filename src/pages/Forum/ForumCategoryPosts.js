@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomKeyboardView from "../../components/CustomKeyboardView";
@@ -22,6 +23,16 @@ const ForumPage = ({ navigation }) => {
   const route = useRoute();
   const { categoryId } = route.params;
   const [posts, setPosts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredPosts, setFilteredPosts] = useState(posts);
+
+  // Filter posts based on the search query
+  useEffect(() => {
+    const filtered = posts.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredPosts(filtered);
+  }, [posts, searchQuery]);
 
   useEffect(() => {
     const fetchPostsAndAuthors = async () => {
@@ -88,97 +99,132 @@ const ForumPage = ({ navigation }) => {
       style={{ flex: 1, paddingTop: hp(3), paddingHorizontal: wp(5) }}
       edges={["right", "top", "left"]}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          width: "100%",
-          paddingBottom: hp(3),
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ForumPage")}
-          style={{ marginRight: 20 }}
+      <View style={{ paddingBottom: hp(1), gap: 15 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            width: "100%",
+          }}
         >
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20 }}>
-          {categoryId}
-        </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ForumPage")}
+            style={{ marginRight: 20 }}
+          >
+            <Ionicons name="chevron-back" size={24} color="black" />
+          </TouchableOpacity>
+          <Text
+            style={{ textAlign: "center", fontWeight: "bold", fontSize: 20 }}
+          >
+            {categoryId}
+          </Text>
+        </View>
+
+        {/* Search Bar + icon*/}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#fff",
+            marginBottom: 10,
+            borderRadius: 10,
+          }}
+        >
+          <Ionicons
+            name="search"
+            color="#c2c3c8"
+            size={20}
+            style={{ padding: 10 }}
+          />
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Search for a post"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
       </View>
 
       <CustomKeyboardView>
         <ScrollView>
           {/* List of posts */}
           <View className="flex-1 gap-8 mb-10">
-            {posts.map((post) => (
-              <TouchableOpacity
-                key={post.id}
-                style={styles.postContainer}
-                onPress={() =>
-                  navigation.navigate("ForumPost", {
-                    postId: post.id,
-                    category: categoryId,
-                  })
-                }
-              >
-                {/* info  */}
-                <View className="flex-col gap-3">
-                  <View className="flex-row pb-1.5 justify-between items-center">
-                    <View className="flex-row gap-3 items-center">
-                      <Image
-                        source={{
-                          uri:
-                            post.authorPic || "https://i.imgur.com/An9lt8E.png",
-                        }}
-                        style={{ width: 40, height: 40, borderRadius: 100 }}
-                      />
-                      <View>
-                        <Text
-                          style={{ fontSize: hp(2) }}
-                          className="font-semibold"
-                        >
-                          {post.authorName}
-                        </Text>
+            {filteredPosts.length === 0 ? (
+              <View>
+                <Text style={{ fontSize: hp(2) }}>No posts found</Text>
+              </View>
+            ) : (
+              filteredPosts.map((post) => (
+                <TouchableOpacity
+                  key={post.id}
+                  style={styles.postContainer}
+                  onPress={() =>
+                    navigation.navigate("ForumPost", {
+                      postId: post.id,
+                      category: categoryId,
+                    })
+                  }
+                >
+                  {/* info  */}
+                  <View className="flex-col gap-3">
+                    <View className="flex-row pb-1.5 justify-between items-center">
+                      <View className="flex-row gap-3 items-center">
+                        <Image
+                          source={{
+                            uri:
+                              post.authorPic ||
+                              "https://i.imgur.com/An9lt8E.png",
+                          }}
+                          style={{ width: 40, height: 40, borderRadius: 100 }}
+                        />
+                        <View>
+                          <Text
+                            style={{ fontSize: hp(2) }}
+                            className="font-semibold"
+                          >
+                            {post.authorName}
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                  {/* first row */}
-                  <Text
-                    className="font-semibold"
-                    style={{ fontSize: hp(2.25), color: "#bf165e" }}
-                  >
-                    {post.title}
-                  </Text>
-                  {/* title */}
-                  <Text className="" style={{ fontSize: hp(1.75) }}>
-                    {truncateDescription(post.desc)}
-                  </Text>
+                    {/* first row */}
+                    <Text
+                      className="font-semibold"
+                      style={{ fontSize: hp(2.25), color: "#bf165e" }}
+                    >
+                      {post.title}
+                    </Text>
+                    {/* title */}
+                    <Text className="" style={{ fontSize: hp(1.75) }}>
+                      {truncateDescription(post.desc)}
+                    </Text>
 
-                  {/* comments */}
-                  <View className="flex-row justify-between items-center pt-2.5">
-                    <Text
-                      style={{ fontSize: hp(1.6) }}
-                      className="text-neutral-400"
-                    >
-                      {post.createdAt.toDate().toLocaleString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        hour: "numeric",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
-                    </Text>
-                    <Text
-                      className=" text-neutral-400"
-                      style={{ fontSize: hp(1.5) }}
-                    >
-                      {post.commentCount} Comments
-                    </Text>
+                    {/* comments */}
+                    <View className="flex-row justify-between items-center pt-2.5">
+                      <Text
+                        style={{ fontSize: hp(1.6) }}
+                        className="text-neutral-400"
+                      >
+                        {post.createdAt.toDate().toLocaleString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}
+                      </Text>
+                      <Text
+                        className=" text-neutral-400"
+                        style={{ fontSize: hp(1.5) }}
+                      >
+                        {post.commentCount} Comments
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            ))}
+                </TouchableOpacity>
+              ))
+            )}
           </View>
         </ScrollView>
       </CustomKeyboardView>
@@ -191,6 +237,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: hp(1.5),
     paddingVertical: hp(2.5),
+    borderRadius: 10,
+  },
+  searchBar: {
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    backgroundColor: "#fff",
+    color: "#424242",
     borderRadius: 10,
   },
 });
