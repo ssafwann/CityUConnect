@@ -6,7 +6,6 @@ import { auth } from "../../config/Firebase.js";
 import HomePage from "../../pages/HomePage.js";
 import ProfilePage from "../../pages/ProfilePage.js";
 import ForumRoutes from "./ForumRoutes.js";
-import TabBar from "../../components/TabBar.js";
 import { AuthContext } from "../../config/AuthContext.js";
 import FoodMapStack from "./FoodMapRoutes.js";
 import LanguageStack from "./LanguageRoutes.js";
@@ -35,8 +34,6 @@ function HomeStackScreen() {
 }
 
 function HomeTabs() {
-  const { user } = useContext(AuthContext);
-
   const signOut = () => {
     Alert.alert("Sign out", "Are you sure you want to sign out?", [
       {
@@ -61,7 +58,6 @@ function HomeTabs() {
         tabBarStyle: [{ display: "flex" }, null],
         tabBarActiveTintColor: "#bf165e",
       }}
-      // tabBar={(props) => <TabBar {...props} />}
     >
       <Tab.Screen
         name="Index"

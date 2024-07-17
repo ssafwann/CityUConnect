@@ -138,7 +138,6 @@ const FoodMapSelected = ({ route, navigation }) => {
           <View className="flex-row gap-1 items-center">
             <AntDesign name="dislike1" size={24} color="red" />
             <Text style={{ fontSize: hp(2), fontWeight: "500" }}>
-              {" "}
               {restaurant.dislikes}
             </Text>
           </View>

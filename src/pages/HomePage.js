@@ -49,7 +49,6 @@ const HomePage = ({ navigation }) => {
             {/* forum */}
             <Pressable
               className="bg-white flex-col py-7 px-4 gap-6"
-              // style={({pressed}) => [{opacity: pressed ? 'darkgreen' : 'green'}]}
               style={{ borderRadius: 10 }}
               onPress={() => navigation.navigate("Forum")}
             >

@@ -28,9 +28,15 @@ const ForumPage = ({ navigation }) => {
 
   // Filter posts based on the search query
   useEffect(() => {
-    const filtered = posts.filter((post) =>
-      post.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const queryKeywords = searchQuery.toLowerCase().trim().split(" "); // Splitting the search query into keywords
+    const filtered = posts.filter((post) => {
+      const titleLowercased = post.title.toLowerCase().trim();
+      // Check if every keyword is included in the post's title
+      const isMatch = queryKeywords.every((keyword) =>
+        titleLowercased.includes(keyword)
+      );
+      return isMatch;
+    });
     setFilteredPosts(filtered);
   }, [posts, searchQuery]);
 

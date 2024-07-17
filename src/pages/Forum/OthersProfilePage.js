@@ -15,8 +15,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Ionicons, AntDesign } from "@expo/vector-icons"; // Import Ionicons from @expo/vector-icons
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Ionicons } from "@expo/vector-icons";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../config/Firebase";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Linking } from "react-native";

@@ -13,10 +13,6 @@ const FoodMapStackNavigator = () => {
       <FoodMapStack.Screen name="FoodMapData" component={FoodMapData} />
       <FoodMapStack.Screen name="FoodMapSelected" component={FoodMapSelected} />
     </FoodMapStack.Navigator>
-    // <FoodMapStack.Navigator screenOptions={{ headerShown: false }}>
-    //   <FoodMapStack.Screen name="FMap" component={FoodMapSelected} />
-    //   <FoodMapStack.Screen name="FoodMapData" component={FoodMapData} />
-    // </FoodMapStack.Navigator>
   );
 };
 
