@@ -16,7 +16,7 @@ CityUConnect is an innovative mobile application developed as a Final Year Proje
 <p align="center">
   <img src="./screenshots/home.jpeg" width="32%"/>
   <img src="./screenshots/forum_post.jpeg" width="32%"/>
-  <img src="./screenshots/language_phrases.jpeg" width="32%"/>
+  <img src="./screenshots/language_phrase.jpeg" width="32%"/>
 </p>
 
 ## Key Features
